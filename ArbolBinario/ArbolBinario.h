@@ -6,7 +6,7 @@
 template<class T>
 class ArbolBinario {
 private:
-    NodoArbol *raiz;
+    NodoArbol<T> *raiz;
 public:
     ArbolBinario();
 
@@ -75,7 +75,7 @@ T ArbolBinario<T>::search(T dato) {
 template<class T>
 void ArbolBinario<T>::put(T dato) {
     if(raiz==NULL){
-        raiz = new NodoArbol(dato);
+        raiz = new NodoArbol<T>(dato);
     }else{
         raiz->put(dato);
     }
@@ -88,7 +88,7 @@ void ArbolBinario<T>::put(T dato) {
  */
 template<class T>
 void ArbolBinario<T>::remove(T dato) {
-    NodoArbol* aux;
+    NodoArbol<T>* aux;
     if(raiz == NULL){
         throw 4;
     }else{
@@ -115,7 +115,9 @@ bool ArbolBinario<T>::esVacio() {
  */
 template<class T>
 void ArbolBinario<T>::preorder() {
-    
+    if(raiz != NULL){
+        raiz->preorder();
+    }
 }
 
 
@@ -124,7 +126,9 @@ void ArbolBinario<T>::preorder() {
  */
 template<class T>
 void ArbolBinario<T>::inorder() {
-
+    if(raiz != NULL){
+        raiz->inorder();
+    }
 }
 
 
@@ -133,7 +137,9 @@ void ArbolBinario<T>::inorder() {
  */
 template<class T>
 void ArbolBinario<T>::postorder() {
-
+    if(raiz != NULL){
+        raiz->postorder();
+    }
 }
 
 

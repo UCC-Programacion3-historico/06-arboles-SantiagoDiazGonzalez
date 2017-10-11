@@ -1,5 +1,6 @@
 #ifndef HASHENTRY_H
 #define HASHENTRY_H
+using namespace std;
 
 template<class T>
 class NodoArbol {
@@ -7,6 +8,8 @@ private:
     NodoArbol *izq, *der;
     T dato;
 public:
+    NodoArbol(T dato);
+    
     T getDato() const;
 
     void setDato(T dato);
@@ -18,7 +21,13 @@ public:
     T search(T d);
 
     NodoArbol* remover(T d);
+    
+    void preorder();
+    
+    void inorder();
 
+    void postorder();
+    
 //    void print(bool esDerecho, string identacion) {
 //        if (der != NULL) {
 //            der->print(true, identacion + (esDerecho ? "     " : "|    "));
@@ -38,7 +47,10 @@ public:
 };
 
 template<class T>
-void NodoArbol::put(T d){
+NodoArbol<T>::NodoArbol(T dato) : dato(dato){}
+
+template<class T>
+void NodoArbol<T>::put(T d){
     if(d == dato)
         throw 1;
     if(d<dato){ //va a la izq
@@ -55,7 +67,7 @@ void NodoArbol::put(T d){
 }
 
 template<class T>
-void NodoArbol::put(NodoArbol *nodo){
+void NodoArbol<T>::put(NodoArbol *nodo){
     if(nodo->getDato == dato)
         throw 1;
     else if(nodo->getDato < dato){  //va a la izq
@@ -72,7 +84,7 @@ void NodoArbol::put(NodoArbol *nodo){
 }
 
 template<class T>
-T NodoArbol::search(T d) {
+T NodoArbol<T>::search(T d) {
     if(d == dato){
         return dato;
     }else if(d < dato){
@@ -89,8 +101,8 @@ T NodoArbol::search(T d) {
 }
 
 template<class T>
-NodoArbol* NodoArbol::remover(T d){
-    NodoArbol* aux;
+NodoArbol<T>* NodoArbol<T>::remover(T d){
+    NodoArbol<T>* aux;
     if(d == dato){
         if(der != NULL){
             der->put(izq);
@@ -120,13 +132,34 @@ NodoArbol* NodoArbol::remover(T d){
 }
 
 template<class T>
-T NodoArbol::getDato() const {
+T NodoArbol<T>::getDato() const {
     return dato;
 }
 
 template<class T>
-void NodoArbol::setDato(T dato) {
-    NodoArbol::dato = dato;
+void NodoArbol<T>::setDato(T dato) {
+    NodoArbol<T>::dato = dato;
+}
+
+template<class T>
+void NodoArbol<T>::preorder() {
+    cout << dato << ", ";
+    if(izq != NULL) izq->preorder();
+    if(der != NULL) der->preorder();
+}
+
+template<class T>
+void NodoArbol<T>::inorder() {
+    if(izq != NULL) izq->inorder();
+    cout << dato << ", ";
+    if(der != NULL) der->inorder();
+}
+
+template<class T>
+void NodoArbol<T>::postorder() {
+    if(izq != NULL) izq->postorder();
+    if(der != NULL) der->postorder();
+    cout << dato << ", ";
 }
 
 #endif //HASHENTRY_H
