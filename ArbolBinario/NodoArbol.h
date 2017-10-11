@@ -5,11 +5,13 @@ using namespace std;
 template<class T>
 class NodoArbol {
 private:
+
     NodoArbol *izq, *der;
     T dato;
 public:
+
     NodoArbol(T dato);
-    
+
     T getDato() const;
 
     void setDato(T dato);
@@ -20,63 +22,70 @@ public:
 
     T search(T d);
 
-    NodoArbol* remover(T d);
-    
+    NodoArbol *remover(T param);
+
     void preorder();
-    
+
     void inorder();
 
     void postorder();
-    
-//    void print(bool esDerecho, string identacion) {
-//        if (der != NULL) {
-//            der->print(true, identacion + (esDerecho ? "     " : "|    "));
-//        }
-//        cout << identacion;
-//        if (esDerecho) {
-//            cout << " /";
-//        } else {
-//            cout << " \\";
-//        }
-//        cout << "-- ";
-//        cout << dato << endl;
-//        if (izq != NULL) {
-//            izq->print(false, identacion + (esDerecho ? "|    " : "     "));
-//        }
-//    }
+
+    void print(bool esDerecho, string identacion) {
+        if (der != NULL) {
+            der->print(true, identacion + (esDerecho ? "     " : "|    "));
+        }
+        cout << identacion;
+        if (esDerecho) {
+            cout << " /";
+        } else {
+            cout << " \\";
+        }
+        cout << "-- ";
+        cout << dato << endl;
+        if (izq != NULL) {
+            izq->print(false, identacion + (esDerecho ? "|    " : "     "));
+        }
+    }
 };
 
-template<class T>
-NodoArbol<T>::NodoArbol(T dato) : dato(dato){}
 
 template<class T>
-void NodoArbol<T>::put(T d){
-    if(d == dato)
+NodoArbol<T>::NodoArbol(T dato) : dato(dato) {
+    izq = NULL;
+    der = NULL;
+}
+
+
+template<class T>
+void NodoArbol<T>::put(T d) {
+
+    if (d == dato)
         throw 1;
-    if(d<dato){ //va a la izq
-        if(izq == NULL)
-            izq = new NodoArbol(d);
+    else if (d < dato) { // va a la izq
+        if (izq == NULL)
+            izq = new NodoArbol<T>(d);
         else
             izq->put(d);
-    }else{      //va a la der
-        if(der == NULL)
-            der = new NodoArbol(d);
+    } else { // va a la der
+        if (der == NULL)
+            der = new NodoArbol<T>(d);
         else
             der->put(d);
     }
 }
 
 template<class T>
-void NodoArbol<T>::put(NodoArbol *nodo){
-    if(nodo->getDato == dato)
+void NodoArbol<T>::put(NodoArbol<T> *nodo) {
+
+    if (nodo->getDato() == dato)
         throw 1;
-    else if(nodo->getDato < dato){  //va a la izq
-        if(izq == NULL)
+    else if (nodo->getDato() < dato) { // va a la izq
+        if (izq == NULL)
             izq = nodo;
         else
             izq->put(nodo);
-    }else{                          //va a la der
-        if(der == NULL)
+    } else { // va a la der
+        if (der == NULL)
             der = nodo;
         else
             der->put(nodo);
@@ -85,46 +94,46 @@ void NodoArbol<T>::put(NodoArbol *nodo){
 
 template<class T>
 T NodoArbol<T>::search(T d) {
-    if(d == dato){
+    if (d == dato) {
         return dato;
-    }else if(d < dato){
-        if(izq == NULL)
+    } else if (d < dato) {
+        if (izq == NULL)
             throw 3;
         else
-            izq->search(d);
-    }else{
-        if(der == NULL)
+            return izq->search(d);
+    } else {
+        if (der == NULL)
             throw 3;
         else
-            der->search(d);
+            return der->search(d);
     }
 }
 
 template<class T>
-NodoArbol<T>* NodoArbol<T>::remover(T d){
-    NodoArbol<T>* aux;
-    if(d == dato){
-        if(der != NULL){
+NodoArbol<T> *NodoArbol<T>::remover(T d) {
+    NodoArbol<T> *aux;
+    if (d == dato) {
+        if (der != NULL) {
             der->put(izq);
-            return der; //por criterio q yo tomo
+            return der;
         }
-        return izq;     //si der es nulo, vemos el izq, si este es nulo no es problema
-    }else if(d < dato){
-        if(izq == NULL)
+        return izq;
+    } else if (d < dato) {
+        if (izq == NULL)
             throw 3;
-        else{
+        else {
             aux = izq;
             izq = izq->remover(d);
-            if(izq != aux)
+            if (izq != aux)
                 delete aux;
         }
-    }else{
-        if(der == NULL)
+    } else {
+        if (der == NULL)
             throw 3;
-        else{
+        else {
             aux = der;
             der = der->remover(d);
-            if(der != aux)
+            if (der != aux)
                 delete aux;
         }
     }
@@ -138,28 +147,29 @@ T NodoArbol<T>::getDato() const {
 
 template<class T>
 void NodoArbol<T>::setDato(T dato) {
-    NodoArbol<T>::dato = dato;
+    NodoArbol::dato = dato;
 }
 
 template<class T>
 void NodoArbol<T>::preorder() {
     cout << dato << ", ";
-    if(izq != NULL) izq->preorder();
-    if(der != NULL) der->preorder();
+    if (izq != NULL) izq->preorder();
+    if (der != NULL) der->preorder();
 }
 
 template<class T>
 void NodoArbol<T>::inorder() {
-    if(izq != NULL) izq->inorder();
+    if (izq != NULL) izq->inorder();
     cout << dato << ", ";
-    if(der != NULL) der->inorder();
+    if (der != NULL) der->inorder();
 }
 
 template<class T>
 void NodoArbol<T>::postorder() {
-    if(izq != NULL) izq->postorder();
-    if(der != NULL) der->postorder();
+    if (izq != NULL) izq->postorder();
+    if (der != NULL) der->postorder();
     cout << dato << ", ";
 }
+
 
 #endif //HASHENTRY_H
