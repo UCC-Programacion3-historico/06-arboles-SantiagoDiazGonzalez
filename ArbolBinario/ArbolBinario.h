@@ -28,6 +28,11 @@ public:
 
     void print();
 
+    int contarPorNivel(unsigned int);
+
+    void espejo();
+
+    bool operator==(ArbolBinario);
 };
 
 
@@ -59,12 +64,9 @@ ArbolBinario<T>::~ArbolBinario() {
  */
 template<class T>
 T ArbolBinario<T>::search(T dato) {
-
-    if (raiz == NULL) {
-        throw 3;
-    } else {
-        return raiz->search(dato);
-    }
+    if (raiz == NULL)
+        throw 1;
+    return raiz->search(dato);
 }
 
 
@@ -75,11 +77,10 @@ T ArbolBinario<T>::search(T dato) {
  */
 template<class T>
 void ArbolBinario<T>::put(T dato) {
-    if (raiz == NULL) {
+    if (raiz == NULL)
         raiz = new NodoArbol<T>(dato);
-    } else {
+    else
         raiz->put(dato);
-    }
 }
 
 
@@ -90,15 +91,12 @@ void ArbolBinario<T>::put(T dato) {
 template<class T>
 void ArbolBinario<T>::remove(T dato) {
     NodoArbol<T> *aux;
-    if (raiz == NULL) {
+    if (raiz == NULL)
         throw 6;
-    } else {
-
-        aux = raiz;
-        raiz = raiz->remover(dato);
-        if (raiz != aux)
-            delete aux;
-    }
+    aux = raiz;
+    raiz = raiz->remover(dato);
+    if (raiz != aux)        //si se quiere eliminar la raiz no hay padre para borrar el aux
+        delete aux;
 }
 
 
@@ -128,9 +126,8 @@ void ArbolBinario<T>::preorder() {
  */
 template<class T>
 void ArbolBinario<T>::inorder() {
-    if (raiz != NULL) {
+    if (raiz != NULL)
         raiz->inorder();
-    }
 }
 
 
@@ -139,9 +136,8 @@ void ArbolBinario<T>::inorder() {
  */
 template<class T>
 void ArbolBinario<T>::postorder() {
-    if (raiz != NULL) {
+    if (raiz != NULL)
         raiz->postorder();
-    }
 }
 
 
@@ -150,11 +146,34 @@ void ArbolBinario<T>::postorder() {
  */
 template<class T>
 void ArbolBinario<T>::print() {
-
-    if (raiz != NULL) {
+    if (raiz != NULL)
         raiz->print(false, "");
-    }
 }
 
+template<class T>
+int ArbolBinario<T>::contarPorNivel(unsigned int L) {
+    if (raiz == NULL)
+        throw -1;
+    raiz->contarPorNivel(L);
+}
+
+template<class T>
+void ArbolBinario<T>::espejo() {
+    if (raiz == NULL)
+        throw -1;
+    raiz->espejo();
+}
+
+template<class T>
+bool ArbolBinario<T>::operator==(ArbolBinario A) {
+    if (this->raiz == NULL && A.raiz == NULL)
+        return true;
+
+    if (this->raiz != NULL && A.raiz != NULL) {
+        return this->raiz->compara(A.raiz);
+    }
+
+    return false;
+}
 
 #endif //HASHMAP_H
